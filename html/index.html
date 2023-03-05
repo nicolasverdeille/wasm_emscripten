@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+  </head>
+  <body>
+    <script type="module">
+      (async function () {
+        const imports = {
+          env: {
+            memory: new WebAssembly.Memory({initial: 1}),
+            STACKTOP: 0,
+          },
+        };
+        const {instance} = await WebAssembly.instantiateStreaming(
+          fetch('/wasm_emscripten.wasm'),
+          imports,
+        );
+        console.log(instance.exports.add(5, 12));
+      })();  
+    </script>
+  </body>
+</html>
