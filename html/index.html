@@ -2,15 +2,22 @@
 <html lang="en">
   <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
-    <script type="text/javascript" src="wasm-emscripten.js"></script>
   </head>
   <body>
-    <script>
-      Module.onRuntimeInitialized = () => {
-        const add = Module.cwrap('add', 'number', ['number', 'number']);
-        console.log(add(5, 5));
-        console.log(add(0, 45));
-      };    
+    <script type="module">
+      import CreateRuntime from "./wasm-emscripten.js";
+      const runtime = await fetch('wasm_emscripten.wasm').then(wasm => {
+        return wasm.arrayBuffer();
+      }).then(wasm => {
+        return CreateRuntime({wasm: wasm});
+      });
+
+      const add = runtime.cwrap('add', 'number', ['number', 'number']);
+      const coin = runtime.cwrap('coin', 'string', []);
+      console.log(add(5, 5));
+      console.log(add(0, 45));
+
+      console.log(coin());
     </script>
   </body>
 </html>
