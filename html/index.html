@@ -5,11 +5,16 @@
   </head>
   <body>
     <script type="module">
+      function log(s) {
+        console.log("Coin")
+        console.log(s)
+      }
+
       import CreateRuntime from "./wasm-emscripten.js";
       const runtime = await fetch('wasm_emscripten.wasm').then(wasm => {
         return wasm.arrayBuffer();
       }).then(wasm => {
-        return CreateRuntime({wasm: wasm});
+        return CreateRuntime();
       });
 
       const add = runtime.cwrap('add', 'number', ['number', 'number']);
